@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head lang = "en">
+        <link rel="stylesheet" type="text/css" href="{% static 'evaluArt/base.css' %}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <meta charset = "UTF-8" />
+        <!-- title on the tab -->
+        <title>
+            evaluArt - 
+            {% block title_block %}
+            base
+            {% endblock %}
+        </title>
+    </head>
+        
+    <body class="static_setup">
+        <!-- display the logo -->
+        <div class = "top_bar">
+            <div class="col-md-2">
+                <div>
+                    <img class="logo" src="{% static 'images/logo2.png' %}" alt="logo" />
+                </div>
+            </div>
+
+            <div class="col-md-8">
+            </div>
+            
+            <div class="col-md-2">
+                <div class = "userAuth">
+                    <!-- if else to be done -->
+                    <!-- links to following pages to be done -->
+                    <button type="button" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-outline-primary">Sign Up</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="navigation_bar">
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Artwork
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                Categories<br>
+                                <a class="dropdown-item" href="#">Abstract</a>
+                                <a class="dropdown-item" href="#">Animals</a>
+                                <a class="dropdown-item" href="#">Anime/Cartoons</a>
+                                <a class="dropdown-item" href="#">Futuristic</a>
+                                <a class="dropdown-item" href="#">Surrealism</a>
+                                <a class="dropdown-item" href="#">Pixel Art</a>
+                                <a class="dropdown-item" href="#">Nature</a>
+
+                                <br>
+                                <div class="dropdown-divider"></div>
+                                <br>
+                                Top Rated<br>
+                                <a class="dropdown-item" href="#">Today</a><br>
+                                <a class="dropdown-item" href="#">This Week</a><br>
+                                <a class="dropdown-item" href="#">This Month</a><br>
+                                <a class="dropdown-item" href="#">All Time</a><br>
+
+                            
+                            </div>
+                        </li>   
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Canvas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact Us</a>
+                        </li>
+                   
+                    </ul>
+                  </div>
+
+                <form class="form-inline">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+
+
+        <div>
+            {% block content_block %}
+            {% endblock %}
+        </div>
+    </body>
+
+
+
+
+</html>

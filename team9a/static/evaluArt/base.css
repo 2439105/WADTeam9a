@@ -1,0 +1,52 @@
+*{
+    margin:0;
+    padding:0;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    background-color:#a7d4f3;
+}
+
+.static_setup{
+    width: 100%;;
+    height: 150px;
+    position: relative;
+    background-color: #a7d4f3;
+}
+
+img.logo {
+    width: 250px;
+    height:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    background-color: #a7d4f3;
+}
+
+div.userAuth{
+    position: absolute;
+    top: 20px;  
+    background-color:#a7d4f3;
+}
+
+div.top_bar{
+    background-color: #a7d4f3;
+}
+
+
+#navigation_bar{
+    width: 100%;
+    height: 50px;
+    background-color:#6cb5ee;
+    position: absolute;
+    bottom:0;
+}
+
+nav.search{
+    background-color: #6cb5ee;
+    position: relative;
+}
+
+ul.navbar-nav > li {
+    margin-left: 20px;
+    margin-right: 20px;
+}
