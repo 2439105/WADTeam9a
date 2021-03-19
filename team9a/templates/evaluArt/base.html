@@ -3,11 +3,12 @@
 
 <html>
     <head lang = "en">
-        <link rel="stylesheet" type="text/css" href="{% static 'evaluArt/base.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="{% static "js/jquery-3.3.1.min.js" %}" crossorigin="anonymous"></script>
         <meta charset = "UTF-8" />
         <!-- title on the tab -->
         <title>
@@ -23,7 +24,10 @@
         <div class = "top_bar">
             <div class="col-md-2">
                 <div>
+                    <a href={% url 'evaluArt:base' %}>
                     <img class="logo" src="{% static 'images/logo2.png' %}" alt="logo" />
+                    </a>
+                    
                 </div>
             </div>
 
@@ -31,11 +35,16 @@
             </div>
             
             <div class="col-md-2">
-                <div class = "userAuth">
+                <div class = "userAuth">      
+                    {% if user.is_authenticated %}
+                    Logged in as, {{ user.username }}<br>
+                    <button type="button" class="btn btn-outline-primary"><a href='#'>Sign Out</a></button>
+                    {% else %}
                     <!-- if else to be done -->
                     <!-- links to following pages to be done -->
-                    <button type="button" class="btn btn-primary">Login</button>
-                    <button type="button" class="btn btn-outline-primary">Sign Up</button>
+                    <button type="button" class="btn btn-primary"}><a href={% url 'evaluArt:login' %}>Login</a></button>
+                    <button type="button" class="btn btn-outline-primary"><a href={% url 'evaluArt:register' %}>Register</a></button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -75,7 +84,7 @@
                             <a class="nav-link" href="#">About<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Canvas</a>
+                            <a class="nav-link" href={% url 'evaluArt:canvas' %}>Canvas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact Us</a>
@@ -83,16 +92,11 @@
                    
                     </ul>
                   </div>
-
-                <form class="form-inline">
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-primary" type="submit">Search</button>
-                </form>
             </nav>
         </div>
 
 
-        <div>
+        <div class = "content">
             {% block content_block %}
             {% endblock %}
         </div>

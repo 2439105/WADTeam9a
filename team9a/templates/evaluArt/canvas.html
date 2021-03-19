@@ -1,0 +1,12 @@
+{% extends 'evaluArt/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Canvas
+{% endblock %}
+
+{% block content_block %}
+    <canvas id="canvas"></canvas>
+    <script src = "{% static "js/canvas.js" %}"></script>
+
+{% endblock %}

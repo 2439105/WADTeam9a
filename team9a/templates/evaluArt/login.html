@@ -5,7 +5,7 @@
 	Login
 {% endblock %}
 
-{% block body_block %}
+{% block content_block %}
 <h1>Login to EvalArt</h1>
 <form id="login_form" method="post" action="{% url 'evaluArt:login' %}">
 	{% csrf_token %}

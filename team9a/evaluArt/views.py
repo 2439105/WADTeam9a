@@ -67,3 +67,11 @@ def user_login(request):
     
     else:
         return render(request, 'evaluArt/login.html')
+
+def canvas(request):
+    return render(request, 'evaluArt/canvas.html')
+
+
+def contact_us(request):
+    form = ContactUs
+    return render(request, 'evaluArt/contact_us.html', {'form': form })

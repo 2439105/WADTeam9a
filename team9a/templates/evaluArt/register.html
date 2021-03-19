@@ -5,14 +5,14 @@
 	Register
 {% endblock %}
 
-{% block body_block %}
+{% block content_block %}
  <h1>Register for EvaluArt</h1>
 {% if registered %}
 EvaluArt says: <strong>thank you for registering!</strong>
 
 {% else %}
-EvaluArt says: <strong>register here!</strong><br />
-<form id="user_form" method="post" action="{% url 'rango:register' %}" enctype="multipart/form-data">
+<strong>Register</strong><br />
+<form id="user_form" method="post" action="{% url 'evaluArt:register' %}" enctype="multipart/form-data">
 
 	{% csrf_token %}
 	

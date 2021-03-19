@@ -7,4 +7,6 @@ urlpatterns = [
     path('', views.base, name='base'),
     path('register/', views.register, name='register'), # New mapping
     path('login/', views.user_login, name='login'),
+    path('canvas/', views.canvas, name='canvas'),
+    path('contact_us/', views.contact_us, name='contact_us'),
 ]

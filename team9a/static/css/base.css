@@ -50,3 +50,9 @@ ul.navbar-nav > li {
     margin-left: 20px;
     margin-right: 20px;
 }
+
+div.content {
+    position: fixed;
+    top: 200px;
+    left: 40px;
+}
