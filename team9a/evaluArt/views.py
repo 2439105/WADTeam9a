@@ -4,11 +4,12 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from evaluArt.forms import UserForm, UserProfileForm
+from evaluArt.forms import UserForm, UserProfileForm, ContactUs
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.core.mail import send_mail, BadHeaderError
 
 # Create your views here.
 def base(request):

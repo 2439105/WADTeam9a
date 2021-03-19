@@ -1,0 +1,17 @@
+{% extends 'evaluArt/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Contact Us
+{% endblock %}
+
+{% block content_block %}
+<h1>Contact Us</h1>
+<h2>Please send any questions or concerns you have about our website. We will send you a response through your email.</h2>
+
+<form role="form" action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
