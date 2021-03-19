@@ -5,11 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from evaluArt.forms import UserForm, UserProfileForm, ContactUs
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
-from django.urls import reverse
 from django.shortcuts import redirect
-from django.core.mail import send_mail, BadHeaderError
+from django.contrib import messages
 
 # Create your views here.
 def base(request):
@@ -74,5 +71,13 @@ def canvas(request):
 
 
 def contact_us(request):
-    form = ContactUs
-    return render(request, 'evaluArt/contact_us.html', {'form': form })
+    if request.method == 'POST':
+        f = ContactUs(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.add_message(request, messages.INFO, 'Feedback Submitted.')
+            #REDIRECT TO HOME PAGE LATER
+            return redirect('evaluArt/')
+    else:
+        f = ContactUs()    
+    return render(request, 'evaluArt/contact_us.html', {'form': f })

@@ -144,7 +144,3 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
-
-#Email information, for contact us forms
-DEFAULT_FROM_EMAIL = '2439105N@student.gla.ac.uk'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
