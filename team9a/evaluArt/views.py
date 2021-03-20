@@ -54,7 +54,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('evaluArt:index'))
+                return redirect(reverse('evaluArt:login'))
                 
             else:
                 return HttpResponse("Your EvaluArt account is disabled.")
@@ -65,6 +65,12 @@ def user_login(request):
     
     else:
         return render(request, 'evaluArt/login.html')
+
+@login_required
+def user_logout(request):
+    # Since we know the user is logged in, we can now just log them out.
+    logout(request)
+    return redirect(reverse('evaluArt:login'))
 
 def canvas(request):
     return render(request, 'evaluArt/canvas.html')
