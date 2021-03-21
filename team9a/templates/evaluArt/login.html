@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block content_block %}
+{% if user.is_authenticated %}
+EvaluArt says: <strong>you are logged in</strong>
+
+{% else %}
 <h1>Login to EvalArt</h1>
 <form id="login_form" method="post" action="{% url 'evaluArt:login' %}">
 	{% csrf_token %}
@@ -15,4 +19,5 @@
 	<br />
 	<input type="submit" value="submit" />
 </form>
+{% endif %}
 {% endblock %}

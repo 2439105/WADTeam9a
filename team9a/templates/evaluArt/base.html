@@ -38,7 +38,7 @@
                 <div class = "userAuth">      
                     {% if user.is_authenticated %}
                     Logged in as, {{ user.username }}<br>
-                    <button type="button" class="btn btn-outline-primary"><a href='#'>Sign Out</a></button>
+                    <button type="button" class="btn btn-outline-primary"><a href={% url 'evaluArt:logout' %}>Sign Out</a></button>
                     {% else %}
                     <!-- if else to be done -->
                     <!-- links to following pages to be done -->

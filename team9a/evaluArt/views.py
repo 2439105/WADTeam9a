@@ -5,11 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from evaluArt.forms import UserForm, UserProfileForm, ContactUs
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
-from django.urls import reverse
 from django.shortcuts import redirect
-from django.core.mail import send_mail, BadHeaderError
+from django.contrib import messages
 
 # Create your views here.
 def base(request):
@@ -57,7 +54,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('evaluArt:index'))
+                return redirect(reverse('evaluArt:login'))
                 
             else:
                 return HttpResponse("Your EvaluArt account is disabled.")
@@ -69,10 +66,24 @@ def user_login(request):
     else:
         return render(request, 'evaluArt/login.html')
 
+@login_required
+def user_logout(request):
+    # Since we know the user is logged in, we can now just log them out.
+    logout(request)
+    return redirect(reverse('evaluArt:login'))
+
 def canvas(request):
     return render(request, 'evaluArt/canvas.html')
 
 
 def contact_us(request):
-    form = ContactUs
-    return render(request, 'evaluArt/contact_us.html', {'form': form })
+    if request.method == 'POST':
+        f = ContactUs(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.add_message(request, messages.INFO, 'Feedback Submitted.')
+            #REDIRECT TO HOME PAGE LATER
+            return redirect('evaluArt/')
+    else:
+        f = ContactUs()    
+    return render(request, 'evaluArt/contact_us.html', {'form': f })
