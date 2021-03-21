@@ -53,6 +53,7 @@ ul.navbar-nav > li {
 
 div.content {
     position: fixed;
-    top: 200px;
+    top: 100px;
     left: 40px;
+    background-color: white;
 }
