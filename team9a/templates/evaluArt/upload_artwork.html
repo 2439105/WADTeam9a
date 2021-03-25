@@ -1,0 +1,35 @@
+{% extends "evaluArt/base.html" %}
+
+{% block title_block %}
+	Contact Us
+{% endblock %}
+
+{% block content_block %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="content">
+    <div class="section-inner clearfix">
+        <h3>Upload your art</h3>
+        <body>Include a description about what you would like advice on.</body>       
+
+        <form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+   {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
+{% if img_obj %}
+  <h3>Succesfully uploaded : {{img_obj.title}}</h3>
+  <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
+{% endif %}
+
+        </div>
+    </div>
+{% endblock %}

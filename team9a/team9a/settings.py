@@ -24,7 +24,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 #meida directory
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 
-LOGIN_URL = 'avaluArt:login'
+LOGIN_URL = 'evaluArt:login'
 
 
 # Quick-start development settings - unsuitable for production

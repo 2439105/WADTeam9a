@@ -7,7 +7,7 @@
 
 {% block content_block %}
 
-{% if messages %}
+    {% if messages %}
     <ul class="messages">
         {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -18,8 +18,7 @@
     <div class="content">
     <div class="section-inner clearfix">
 
-        <h3>Contact Us</h3>
-        <body>Please send any questions or concerns you have about our website. We will send you a response through your email.</body>
+        <h3>Submit Your feedback</h3>       
 
         <form action="" method="post">
             {% csrf_token %}
@@ -34,6 +33,5 @@
 
         </div>
     </div>
-    
 
 {% endblock %}

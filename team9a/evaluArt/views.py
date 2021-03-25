@@ -4,22 +4,16 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from evaluArt.forms import UserForm, UserProfileForm
-from evaluArt.models import ContactUs, comments, Rating, Category, Post
-from django.shortcuts import redirect
+from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm
+from evaluArt.models import ContactUs, comments, Rating, Category, Artwork
 from django.contrib import messages
 
-from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
-from django.contrib import messages
-from django.core.paginator import Paginator
 from django.contrib.auth.models import User
-from django.views.generic import ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-import json
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 
 # Create your views here.
 def base(request):
@@ -88,107 +82,30 @@ def user_logout(request):
 def canvas(request):
     return render(request, 'evaluArt/canvas.html')
 
-
 def contact_us(request):
     if request.method == 'POST':
-        f = ContactUs(request.POST)
+        f = ContactUsForm(request.POST)
         if f.is_valid():
             f.save()
             messages.add_message(request, messages.INFO, 'Feedback Submitted.')
-            #REDIRECT TO HOME PAGE LATER
-            return redirect('evaluArt/')
+            return redirect('/evaluArt')
     else:
-        f = ContactUs()    
-    return render(request, 'evaluArt/contact_us.html', {'form': f })
-
-class PostListView(ListView):
-    model = Post
-    template_name = 'evaluArt/artwork.html'
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
-    paginate_by = 5
-
-class UserPostListView(ListView):
-    model = Post
-    template_name = 'evaluArt/user_posts.html'
-    context_object_name = 'posts'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = get_object_or_404(UserProfile, user=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
-
-class PostDetailView(DetailView):
-    model = Post
-
-'''
-#This shows all posts in order of newest first. Each page displays 15 posts and we move to the next apge to view more
-class PostListView(ListView):
-	model = Artwork
-	template_name = 'evaluArt/artwork.html'
-	context_object_name = 'artwork'
-	ordering = ['-date_posted']
-	paginate_by = 15
-	def get_context_data(self, **kwargs):
-		context = super(PostListView, self).get_context_data(**kwargs)
-        #if user is signed in this shows if they have rated the post
-		if self.request.user.is_authenticated:
-			rated = [i for i in Artwork.objects.all() if Rating.objects.filter(user = self.request.user, post=i)]
-			context['rated_post'] = rated
-		return context
-    
-#Shows all posts by specific user
-class UserPostListView(LoginRequiredMixin, ListView):
-	model = Artwork
-	template_name = 'evaluArt/user_posts.html'
-	context_object_name = 'posts'
-	paginate_by = 15
-
-	def get_context_data(self, **kwargs):
-		context = super(UserPostListView, self).get_context_data(**kwargs)
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		rated = [i for i in Artwork.objects.filter(user_name=user) if Rating.objects.filter(user = self.request.user, post=i)]
-		context['liked_post'] = rated
-		return context
-
-	def get_queryset(self):
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		return Artwork.objects.filter(user_name=user).order_by('-date_posted')
-#shows a single post and allows a user to comment
-@login_required
-def post_detail(request, pk):
-	artwork = get_object_or_404(Artwork, pk=pk)
-	user = request.user
-	is_rated =  Rating.objects.filter(user=user, artwork=Artwork)
-	if request.method == 'POST':
-		form = NewCommentForm(request.POST)
-		if form.is_valid():
-			data = form.save(commit=False)
-			data.artwork = artwork
-			data.username = user
-			data.save()
-			return redirect('post-detail', pk=pk)
-	else:
-		form = NewCommentForm()
-	return render(request, 'evaluArt/post_detail.html', {'artwork':artwork, 'is_rated':is_rated, 'form':form})
-
-#rating system change with comments
+        f = ContactUsForm()
+    return render(request, 'evaluArt/contact_us.html', {'form': f})
 
 @login_required
-def like(request):
-	artwork_id = request.GET.get("likeId", "")
-	user = request.user
-	post = Artwork.objects.get(pk=artwork_id)
-	rated= False
-	rated = Rating.objects.filter(user=user, artwork=Artwork)
-	if rated:
-		rated.delete()
-	else:
-		liked = True
-		Like.objects.create(user=user, post=post)
-	resp = {
-        'liked':liked
-    }
-	response = json.dumps(resp)
-	return HttpResponse(response, content_type = "application/json")
-'''
+def upload_artwork(request):
+    if request.method == 'POST':
+        f = ArtworkForm(request.POST, request.FILES)
+        if f.is_valid():
+            f.save()
+            img_obj = f.instance
+            messages.add_message(request, messages.INFO, 'Artwork Submitted.')
+            return render(request, 'upload_artwork.html', {'form': f, 'img_obj': img_obj})
+    else:
+        f = ArtworkForm()
+    return render(request, 'evaluArt/upload_artwork.html', {'form': f})
+
+def artwork_list(request):
+    artwork = Artwork.objects.all()
+    return render(request, 'evaluArt/artwork_list.html', {'artwork': artwork})

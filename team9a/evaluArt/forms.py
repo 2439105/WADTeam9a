@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from evaluArt.models import UserProfile, ContactUs, comments, Post
+from evaluArt.models import UserProfile, ContactUs, comments, Artwork
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -14,20 +14,12 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('picture',)
 
-class ContactUs(forms.ModelForm):
+class ContactUsForm(forms.ModelForm):
     class Meta:
         model = ContactUs
         fields = '__all__'
   
-#maybe delete these
-'''
-class NewArtworkForm(forms.ModelForm):
-	class Meta:
-		model = Artwork
-		fields = ['picture', 'description']
-
-class NewCommentForm(forms.ModelForm):
-	class Meta:
-		model = comments
-		fields = ['text']
-        '''
+class ArtworkForm(forms.ModelForm):
+    class Meta:
+        model = Artwork
+        fields = '__all__'

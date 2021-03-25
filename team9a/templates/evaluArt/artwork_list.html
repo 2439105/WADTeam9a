@@ -1,0 +1,28 @@
+{% extends "evaluArt/base.html"  %}
+
+{% block title %}
+    Blogg - {{ block.super }}
+{% endblock %}
+
+{% block content_block %}    
+
+    <div class="content">
+        <div class="section-inner clearfix">        
+
+        {% for artwork in artwork %}
+            <h3>                        
+                <a href="http://127.0.0.1:8000/{{ artwork.pk }}/">{{ artwork.picture }}</a>
+            </h3>
+            <p class="artwork-info">
+                <span>Date: {{ artwork.date_posted }} </span> |
+                <span>Description: {{ artwork.content }} </span> |
+                <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
+            </p>
+        {% empty %}
+        <p>There are no posts</p>
+        {% endfor %}    
+
+        </div>
+    </div>
+
+{% endblock %}
