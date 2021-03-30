@@ -78,6 +78,9 @@ def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
     return redirect(reverse('evaluArt:login'))
+    
+def about(request):
+    return render(request, 'evaluArt/about.html')
 
 def canvas(request):
     return render(request, 'evaluArt/canvas.html')
