@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm
-from evaluArt.models import ContactUs, comments, Rating, Category, Artwork
+from evaluArt.models import ContactUs, Comments, Rating, Category, Artwork, UserProfile
 from django.contrib import messages
 
 from django.contrib.auth.models import User
@@ -109,3 +109,11 @@ def upload_artwork(request):
 def artwork_list(request):
     artwork = Artwork.objects.all()
     return render(request, 'evaluArt/artwork_list.html', {'artwork': artwork})
+
+
+@login_required
+def my_account(request):
+    context_dict = {}
+    context_dict['user'] = request.user
+    context_dict['profile'] = UserProfile.objects.filter(user = context_dict['user'])[0]
+    return render(request, 'evaluArt/my_account.html', context=context_dict)

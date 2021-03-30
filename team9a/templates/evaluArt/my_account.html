@@ -1,0 +1,115 @@
+{% extends 'evaluArt/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ user.username }}
+{% endblock %}
+
+<!-- inspired from: https://www.bootdey.com/snippets/view/profile-with-data-and-skills#html -->
+{% block header_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/my_account.css' %}?{% now 'U' %}">
+{% endblock %}
+
+{% block content_block %}
+    <!-- copy pasted -->
+    <div class="container">
+        <div class="main-body">
+        
+              <div class="row gutters-sm">
+
+                <div class="col-md-3 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <img id="profile_picture" src={{ profile.picture.url }} alt="profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="card mb-3">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <h6 class="mb-0">Username</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                {{ user.username }}
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                {{ user.email }}
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <h6 class="mb-0">Experience</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {% if profile.experience == "0" %}
+                                        Beginner
+                                    {% elif profile.experience == "1" %}
+                                        Novice
+                                    {% elif profile.experience == "2" %}
+                                        Expert
+                                    {% elif profile.experience == "3" %}
+                                        Professional
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <h6 class="mb-0">Description</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <!-- To be changed -->
+                                    HOLDER
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2><strong>My Artwork </strong></h2>
+        <span><a href={% url 'evaluArt:artwork_create' %}>Add new Artwork +</a></span>
+
+        <div class="container">
+            <div class="row">
+                {% if not profile.artwork.all %}
+                    No uploads yet
+                {% else %}
+                    {% for artworks in profile.artwork.all %}
+                        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                            <a href="#"><img class="left-block img-responsive" src="images/genimage.png" width="160" height="160" alt="" /></a>
+                            <p style="width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">One Random Item</p>
+                            <p>50 €</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

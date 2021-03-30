@@ -57,9 +57,9 @@ class Artwork(models.Model):
     def get_absolute_url(self):
         return reverse('evaluArt:artwork-detail', kwargs={'pk': self.pk})
 
-class comments(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    artwork = models.ForeignKey(Artwork, on_delete=models.CASCADE)
+class Comments(models.Model):
+    user = models.ForeignKey(UserProfile, related_name="profile", on_delete=models.CASCADE)
+    artwork = models.ForeignKey(Artwork, related_name="artwork", on_delete=models.CASCADE)
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 

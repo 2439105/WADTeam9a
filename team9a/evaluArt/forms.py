@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from evaluArt.models import UserProfile, ContactUs, comments, Artwork
+from evaluArt.models import UserProfile, ContactUs, Comments, Artwork
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

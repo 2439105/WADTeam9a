@@ -9,6 +9,9 @@
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}?{% now 'U' %}">
         
+        {% block header_block %}
+        {% endblock %}
+
         <!-- title on the tab -->
         <title>
             evaluArt - 
@@ -32,7 +35,7 @@
                 
                 <div class="col-sm-2">
                     {% if user.is_authenticated %}
-                    Logged in as, {{ user.username }}<br>
+                    Logged in as, <a href={% url 'evaluArt:my_account' %}>{{ user.username }}</a><br>
                     <button type="button" class="btn btn-outline-primary"><a href={% url 'evaluArt:logout' %}>Sign Out</a></button>
                     {% else %}
                     <!-- if else to be done -->
