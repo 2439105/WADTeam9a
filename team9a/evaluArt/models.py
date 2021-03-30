@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     experience = models.CharField(max_length=12, choices=EXPERIENCE, default='1')
     picture = models.ImageField(upload_to='profile_images', blank=True)
+    description = models.TextField(editable = True, blank = True)
     
     def __str__(self):
         return self.user.username
