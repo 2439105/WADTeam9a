@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 EXPERIENCE = (
@@ -16,7 +17,7 @@ class UserProfile(models.Model):
     
     # The additional attributes we wish to include.
     experience = models.CharField(max_length=12, choices=EXPERIENCE, default='1')
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    picture = models.ImageField(upload_to='profile_images', default='default/default.jpg', blank=True)
     description = models.TextField(editable = True, blank = True)
     
     def __str__(self):
@@ -42,6 +43,11 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
+# slug is automated
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
     
@@ -53,7 +59,7 @@ class Artwork(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     #category = models.ForeignKey(Category, on_delete=models.CASCADE)
     def __str__(self):
-        return self.user.user + self.picture
+        return self.user.user.username + self.picture.url
 
     def get_absolute_url(self):
         return reverse('evaluArt:artwork-detail', kwargs={'pk': self.pk})

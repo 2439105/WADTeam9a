@@ -63,3 +63,8 @@ img#profile_picture {
 .shadow-none {
     box-shadow: none!important;
 }
+
+.pic{
+    width: 100%;
+    height: auto;
+}

@@ -116,4 +116,5 @@ def my_account(request):
     context_dict = {}
     context_dict['user'] = request.user
     context_dict['profile'] = UserProfile.objects.filter(user = context_dict['user'])[0]
+    context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
     return render(request, 'evaluArt/my_account.html', context=context_dict)

@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     <!-- To be changed -->
-                                    HOLDER
+                                    {{ profile.description }}
                                 </div>
                             </div>
 
@@ -89,22 +89,21 @@
     <div class="container">
         <h2><strong>My Artwork </strong></h2>
         <span><a href={% url 'evaluArt:artwork_create' %}>Add new Artwork +</a></span>
+        <br/>
+        <br/>
 
         <div class="container">
             <div class="row">
-                {% if not profile.artwork.all %}
+                {% if not artwork.all %}
                     No uploads yet
-                {% else %}
-                    {% for artworks in profile.artwork.all %}
+                {% else  %}
+                    {% for a in artwork %}
                         <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                            <a href="#"><img class="left-block img-responsive" src="images/genimage.png" width="160" height="160" alt="" /></a>
-                            <p style="width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">One Random Item</p>
-                            <p>50 €</p>
+                            <a href="#"><img class="pic left-block img-responsive" src={{ a.picture.url }}/></a>
                         </div>
+
                     {% endfor %}
                 {% endif %}
-
-
 
 
 
