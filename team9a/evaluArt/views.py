@@ -116,8 +116,32 @@ def artwork_list(request):
 
 @login_required
 def my_account(request):
+
     context_dict = {}
     context_dict['user'] = request.user
     context_dict['profile'] = UserProfile.objects.filter(user = context_dict['user'])[0]
     context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
+
+    initial_data = {
+        'picture': context_dict['profile'].picture,
+        'experience': context_dict['profile'].experience,
+        'description': context_dict['profile'].description
+    }
+
+    form = UserProfileForm(instance=context_dict['profile'])
+
+
+# if the request is to POST a form
+    if request.method == 'POST':
+        update_form = UserProfileForm(request.POST, instance=context_dict['profile'])
+        if update_form.is_valid:
+            update_form.save()
+            return redirect(reverse('evaluArt:my_account'))
+
+# request doesnt post a form
+    else:
+        context_dict['update_details'] = form
+
     return render(request, 'evaluArt/my_account.html', context=context_dict)
+
+

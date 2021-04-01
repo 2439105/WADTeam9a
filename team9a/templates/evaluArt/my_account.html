@@ -17,6 +17,7 @@
         
               <div class="row gutters-sm">
 
+                <!-- picture section -->
                 <div class="col-md-3 mb-3">
                   <div class="card">
                     <div class="card-body">
@@ -24,9 +25,41 @@
                         <img id="profile_picture" src={{ profile.picture.url }} alt="profile picture">
                       </div>
                     </div>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                        Edit Profile
+                    </button>
+
                   </div>
                 </div>
 
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Change Profile Details </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="update_details" method="post" action="{% url 'evaluArt:my_account' %}" enctype="multipart/form-data">
+
+                                {% csrf_token %}
+                                
+                                <!-- Display each form -->
+                                {{ update_details.as_p }}
+                                
+                                <!-- Provide a button to click to submit the form. -->
+                                <input type="submit" name="submit" value="Update" />
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+                <!-- details section -->
                 <div class="col-md-9">
                     <div class="card mb-3">
                         <div class="card-body">
@@ -84,7 +117,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>        
 
     <div class="container">
         <h2><strong>My Artwork </strong></h2>
