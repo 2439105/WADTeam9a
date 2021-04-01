@@ -114,6 +114,15 @@ def artwork_list(request):
     return render(request, 'evaluArt/artwork_list.html', {'artwork': artwork})
 
 
+def show_artwork(request, pk):
+    artwork = Artwork.objects.filter(pk = pk)[0]
+    context_dict={}
+    context_dict['artwork'] = artwork
+
+
+    return render(request, 'evaluArt/show_artwork.html', context=context_dict)
+
+
 @login_required
 def my_account(request):
 

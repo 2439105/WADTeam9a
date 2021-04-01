@@ -1,28 +1,55 @@
 {% extends "evaluArt/base.html"  %}
+{% load staticfiles %}
 
-{% block title %}
-    Blogg - {{ block.super }}
+{% block title_block %}
+    Artwork
+{% endblock %}
+
+
+{% block header_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/artwork_list.css' %}?{% now 'U' %}">
 {% endblock %}
 
 {% block content_block %}    
+    <div class="container">
+        <div class="content">
+            <div class="section-inner clearfix">        
+            {% for artwork in artwork %}
+                <div class="card">
+                    <div class="card-body">                   
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="{% url 'evaluArt:show_artwork' artwork.pk %}">
+                                    <img src="{{ artwork.picture.url }}" class="pics" > 
+                                </a>
+                            </div>
+                            <div class="col-md-8">
 
-    <div class="content">
-        <div class="section-inner clearfix">        
+                                <h6>
+                                    <p class="artwork-info">
+                                        <span>Submitted by: {{ artwork.user.user.username }} </span>  <br>
+                                        <span>Date: {{ artwork.date_posted }} </span> <br>
+                                        <span>Description: {{ artwork.content }} </span> <br>
+                                        <div class='pk'>
 
-        {% for artwork in artwork %}
-            <h3>                        
-                <a href="http://127.0.0.1:8000/{{ artwork.pk }}/">{{ artwork.picture }}</a>
-            </h3>
-            <p class="artwork-info">
-                <span>Date: {{ artwork.date_posted }} </span> |
-                <span>Description: {{ artwork.content }} </span> |
-                <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
-            </p>
-        {% empty %}
-        <p>There are no posts</p>
-        {% endfor %}    
+                                            {{ artwork.pk }}
 
+                                        </div>
+                                        <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
+                                    </p>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+            <p>There are no posts</p>
+            {% endfor %}    
+
+            </div>
         </div>
+
     </div>
+
 
 {% endblock %}

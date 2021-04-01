@@ -11,6 +11,9 @@ urlpatterns = [
     
     path('upload_artwork/', views.upload_artwork, name='artwork_create'),
     path('artwork/', views.artwork_list, name='artwork_list'),
+
+    # take in variable as pk for artwork
+    path('artwork/<int:pk>/', views.show_artwork, name='show_artwork'),
     
     path('register/', views.register, name='register'), # New mapping
     path('login/', views.user_login, name='login'),

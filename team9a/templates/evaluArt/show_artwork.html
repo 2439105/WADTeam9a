@@ -1,0 +1,15 @@
+{% extends "evaluArt/base.html"  %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Artwork - {{ artwork.pk }}
+{% endblock %}
+
+
+{% block header_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/artwork_list.css' %}?{% now 'U' %}">
+{% endblock %}
+
+{% block content_block %}    
+    <img src={{ artwork.picture.url }}>
+{% endblock %}
