@@ -53,7 +53,7 @@ class Category(models.Model):
 
 class Artwork(models.Model):
     picture = models.ImageField(upload_to='user/%Y/%m/%d/', default='default/default.jpg', blank=True)
-    description = models.CharField(max_length = 800)
+    description = models.TextField(max_length=300)
     date_posted = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
