@@ -13,3 +13,20 @@ img#uploader_pp {
 strong.date{
     color: rgb(66, 66, 66);
 }
+
+img.comment_pp {
+    margin-right: 15px;
+    background-size: cover;
+    border-radius:50% 50% 50% 50%;
+    width: 30px;
+    height:30px;
+}
+div.posted{
+    font-size: smaller;
+    color:rgb(138, 136, 136);
+}
+
+div.comment_div{
+    height: 400px;
+
+}

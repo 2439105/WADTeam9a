@@ -134,18 +134,19 @@ def show_artwork(request, pk):
     context_dict['artwork'] = artwork
     context_dict['profile'] = profile
     context_dict['comments'] = comments
-
-
-
     
+    comment_form = CommentForm()
+
     if request.method == 'POST':
-        f = CommentForm()
+        f = CommentForm(request.POST)
         if f.is_valid():
             comment = f.save(commit=False)
             comment.user = UserProfile.objects.filter(user = request.user)[0]
             comment.artwork = context_dict['artwork']
             comment.save()
-        
+            return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
+    else:
+        context_dict['comment_form'] = comment_form
     return render(request, 'evaluArt/show_artwork.html', context=context_dict)
 
 
