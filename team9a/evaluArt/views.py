@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm
+from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm
 from evaluArt.models import ContactUs, Comments, Rating, Category, Artwork, UserProfile
 from django.contrib import messages
 
@@ -116,11 +116,27 @@ def artwork_list(request):
 
 def show_artwork(request, pk):
     artwork = Artwork.objects.filter(pk = pk)[0]
+    profile = artwork.user
+    comments = Comments.objects.filter(artwork=artwork)
+
     context_dict={}
     context_dict['artwork'] = artwork
+    context_dict['profile'] = profile
+    context_dict['comments'] = comments
 
 
+
+    
+    if request.method == 'POST':
+        f = CommentForm()
+        if f.is_valid():
+            comment = f.save(commit=False)
+            comment.user = UserProfile.objects.filter(user = request.user)[0]
+            comment.artwork = context_dict['artwork']
+            comment.save()
+        
     return render(request, 'evaluArt/show_artwork.html', context=context_dict)
+
 
 
 @login_required
@@ -130,6 +146,7 @@ def my_account(request):
     context_dict['user'] = request.user
     context_dict['profile'] = UserProfile.objects.filter(user = context_dict['user'])[0]
     context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
+    context_dict['comments'] = Comments.objects.filter(artwork = context_dict['artwork'])
 
     initial_data = {
         'picture': context_dict['profile'].picture,

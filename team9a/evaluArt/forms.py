@@ -24,3 +24,8 @@ class ArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
         fields = '__all__'
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('text',)

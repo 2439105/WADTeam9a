@@ -7,9 +7,51 @@
 
 
 {% block header_block %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/artwork_list.css' %}?{% now 'U' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/show_artwork.css' %}?{% now 'U' %}">
 {% endblock %}
 
 {% block content_block %}    
-    <img src={{ artwork.picture.url }}>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <img class="artwork" src={{ artwork.picture.url }}>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card" id="profile_description">
+                <div class="card-body">
+                    <img id="uploader_pp" src={{ profile.picture.url }}>
+                    <strong>
+                    {{ profile.user.username }}
+                    </strong><br>
+                    Posted - {{ artwork.date_posted }}<br><br>
+
+                    <strong>Description: </strong>
+                    {{ artwork.content }}
+                </div>
+            </div>
+
+            <br>
+
+            
+            <div class="card" id="comments">
+                <div class="card-body">
+                    {% if comments %}
+                        <h4>Comments: </h4>
+                        {% for c in comments %}
+                            {{ c.user.user.username }}
+                        {% endfor %}
+                    {% else %}
+                        <h4>No comments yet...</h4>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 {% endblock %}

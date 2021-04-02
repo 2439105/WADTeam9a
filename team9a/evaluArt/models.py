@@ -71,7 +71,7 @@ class Comments(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username + ': ' +   self.text
+        return self.user.user.username + ': ' +   self.text
     
 class Rating(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
