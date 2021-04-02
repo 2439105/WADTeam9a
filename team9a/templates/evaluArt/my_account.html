@@ -132,7 +132,7 @@
                 {% else  %}
                     {% for a in artwork %}
                         <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                            <a href="#"><img class="pic left-block img-responsive" src={{ a.picture.url }}/></a>
+                            <a href="{% url 'evaluArt:show_artwork' a.pk %}"><img class="pic left-block img-responsive" src={{ a.picture.url }}/></a>
                         {{ a.picture.get_absolute_url }}
                         </div>
 
