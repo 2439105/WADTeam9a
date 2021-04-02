@@ -10,7 +10,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/artwork_list.css' %}?{% now 'U' %}">
 {% endblock %}
 
-{% block content_block %}    
+{% block content_block %} 
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+   
     <div class="container">
         <div class="content">
             <div class="section-inner clearfix">        
