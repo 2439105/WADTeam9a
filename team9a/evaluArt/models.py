@@ -50,14 +50,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class Artwork(models.Model):
-    #artwork_id = models.IntegerField(primary_key=True)
-    picture = models.ImageField(upload_to='user/%Y/%m/%d/', blank=True)
-    content = models.CharField(max_length = 800)
+    picture = models.ImageField(upload_to='user/%Y/%m/%d/', default='default/default.jpg', blank=True)
+    description = models.CharField(max_length = 800)
     date_posted = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    #category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     def __str__(self):
         return self.user.user.username + self.picture.url
 

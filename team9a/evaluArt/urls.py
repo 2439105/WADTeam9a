@@ -9,7 +9,7 @@ app_name = 'evaluArt'
 urlpatterns = [
     path('', views.base, name='home'),  # url for post list.
     
-    path('upload_artwork/', views.upload_artwork, name='artwork_create'),
+    path('upload_artwork/', views.upload_artwork, name='upload_artwork'),
     path('artwork/', views.artwork_list, name='artwork_list'),
 
     # take in variable as pk for artwork

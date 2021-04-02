@@ -96,18 +96,29 @@ def contact_us(request):
         f = ContactUsForm()
     return render(request, 'evaluArt/contact_us.html', {'form': f})
 
+
 @login_required
 def upload_artwork(request):
     if request.method == 'POST':
-        f = ArtworkForm(request.POST, request.FILES)
-        if f.is_valid():
-            f.save()
-            img_obj = f.instance
-            messages.add_message(request, messages.INFO, 'Artwork Submitted.')
-            return render(request, 'upload_artwork.html', {'form': f, 'img_obj': img_obj})
+        artwork_form = ArtworkForm(request.POST)
+        if request.user.is_authenticated and artwork_form.is_valid():
+            artwork = artwork_form.save(commit=False)
+            if 'picture' in request.FILES:
+                artwork.picture = request.FILES['picture']
+            else:
+                print('Requested picture is not in files.')
+                print(artwork_form.errors)
+            artwork.user = UserProfile.objects.filter(user=request.user)[0]
+            selected_category = get_object_or_404(Category, pk=request.POST.get('category'))
+            artwork.category = selected_category 
+            artwork.save()
+            return redirect('/evaluArt')
+        else:
+            print(artwork_form.errors)
     else:
-        f = ArtworkForm()
-    return render(request, 'evaluArt/upload_artwork.html', {'form': f})
+        artwork_form = ArtworkForm()
+    return render(request,  'evaluArt/upload_artwork.html', {'form': artwork_form})
+
 
 def artwork_list(request):
     artwork = Artwork.objects.all()
