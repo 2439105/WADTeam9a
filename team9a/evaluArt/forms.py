@@ -19,11 +19,16 @@ class ContactUsForm(forms.ModelForm):
     class Meta:
         model = ContactUs
         fields = '__all__'
-  
+        
+    def clean_user(self):
+        if not self.cleaned_data['user']:
+            return User()
+        return self.cleaned_data['user']
+
 class ArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
-        fields = '__all__'
+        fields = ('picture', 'description','category')
 
 class CommentForm(forms.ModelForm):
     class Meta:
