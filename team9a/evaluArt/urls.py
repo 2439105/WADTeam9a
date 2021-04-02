@@ -7,10 +7,8 @@ from django.conf.urls.static import static
 app_name = 'evaluArt'
 
 urlpatterns = [
-    path('', views.base, name='home'),  # url for post list.
-    
+    path('', views.artwork_list, name='artwork_list'),  # url for post list.
     path('upload_artwork/', views.upload_artwork, name='upload_artwork'),
-    path('artwork/', views.artwork_list, name='artwork_list'),
 
     # take in variable as pk for artwork
     path('artwork/<int:pk>/', views.show_artwork, name='show_artwork'),
