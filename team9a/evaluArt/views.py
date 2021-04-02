@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm
+from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm, SelectCategoryForm
 from evaluArt.models import ContactUs, Comments, Rating, Category, Artwork, UserProfile
 from django.contrib import messages
 
@@ -122,8 +122,14 @@ def upload_artwork(request):
 
 def artwork_list(request):
     artwork = Artwork.objects.all()
-    return render(request, 'evaluArt/artwork_list.html', {'artwork': artwork})
-
+    if request.method == 'POST':
+        category_form = SelectCategoryForm(request.POST)
+        if category_form.is_valid():
+            selected_category = get_object_or_404(Category, pk=request.POST.get('category'))
+            artwork = Artwork.objects.filter(category = selected_category)
+    else:
+        category_form = SelectCategoryForm()
+    return render(request, 'evaluArt/artwork_list.html', {'form' : category_form, 'artwork': artwork})
 
 def show_artwork(request, pk):
     artwork = Artwork.objects.filter(pk = pk)[0]
