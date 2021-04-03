@@ -152,28 +152,59 @@ def show_artwork(request, pk):
     context_dict['profile'] = profile
     context_dict['comments'] = comments
     context_dict['ratings'] = ratings
+    context_dict['rating_num'] = count
+
+    if request.user.is_authenticated:
+        try:
+            loggedin = UserProfile.objects.filter(user=request.user)[0]
+            prev = Rating.objects.filter(
+                user=loggedin, 
+                artwork = artwork)[0]
+            context_dict['previous_rating'] = prev.number
+        except IndexError:
+            context_dict['previous_rating'] = "You haven't rate this artwork yet"
+
+
+    
     context_dict['comment_form'] = CommentForm()
     context_dict['rating_form'] = RatingForm()
     context_dict['average_rating'] = average
-    if request.method == 'POST':
-        if 'Comment' in request.POST:
-            comment_form = CommentForm(request.POST)
-            if comment_form.is_valid():
-                comment = comment_form.save(commit=False)
-                comment.user = UserProfile.objects.filter(user = request.user)[0]
-                comment.artwork = context_dict['artwork']
-                comment.save()
-            rating_form = RatingForm()
-            return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
-        elif 'Rate' in request.POST:
-            rating_form = RatingForm(request.POST)
-            if rating_form.is_valid():
-                rating = rating_form.save(commit=False)
-                rating.user = UserProfile.objects.filter(user=request.user)[0]
-                rating.artwork = context_dict['artwork']
-                rating.save()
-            comment_form = CommentForm()
-            return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
+
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            if 'Comment' in request.POST:
+                comment_form = CommentForm(request.POST)
+                if comment_form.is_valid():
+                    comment = comment_form.save(commit=False)
+                    comment.user = UserProfile.objects.filter(user = request.user)[0]
+                    comment.artwork = context_dict['artwork']
+                    comment.save()
+                rating_form = RatingForm()
+                return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
+
+
+            elif 'Rate' in request.POST:
+                rating_form = RatingForm(request.POST)
+                if rating_form.is_valid():
+                    rating_user = UserProfile.objects.filter(user=request.user)[0]
+                    rating_artwork = context_dict['artwork']
+
+                    try:
+                        previous_rating = Rating.objects.filter(
+                            user=rating_user, 
+                            artwork = rating_artwork)[0]
+                        previous_rating.number = rating_form.cleaned_data.get("number")
+                        previous_rating.save()
+                    except IndexError:
+                        rating = rating_form.save(commit=False)
+                        rating.user = rating_user
+                        rating.artwork = rating_artwork
+                        rating.save()
+
+                comment_form = CommentForm()
+                return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
+
+
     return render(request, 'evaluArt/show_artwork.html', context=context_dict)
 
 

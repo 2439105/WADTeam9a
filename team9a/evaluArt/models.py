@@ -73,10 +73,19 @@ class Comments(models.Model):
     def __str__(self):
         return self.user.user.username + ': ' +   self.text
     
+
+STAR = (
+    (1, '1 - Hated It'),
+    (2, '2 - Mediocre'),
+    (3, '3 - Good'),
+    (4, '4 - Great'),
+    (5, '5 - Masterpiece'),
+
+)
 class Rating(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     artwork = models.ForeignKey(Artwork, on_delete=models.CASCADE)
-    number = models.IntegerField(default = 5, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    number = models.IntegerField(choices=STAR)
     def __str__(self):
-        return self.user.username + str(self.number)
+        return "User: " + self.user.user.username +" - Artwork pk: "+ str(self.artwork.pk) + " - Rating: " + str(self.number)
        

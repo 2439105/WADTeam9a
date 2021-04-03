@@ -15,7 +15,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <img class="artwork" src={{ artwork.picture.url }}>
+            <img class="artwork" src={{ artwork.picture.url }}><br>
         </div>
         <div class="col-md-4">
             <div class="card" id="profile_description">
@@ -34,7 +34,12 @@
 
                     <br>
                     <strong>Rating: </strong>
-                    {{ average_rating }}
+                    {{ average_rating }} ({{ rating_num }})
+                    <br>
+                    
+                    {% if user.is_authenticated %}
+                    <strong>Your rating: </strong> {{ previous_rating }}.0
+                    {% endif %}
                     <br>
                     <strong>Description: </strong>
                     {{ artwork.description }}
@@ -42,6 +47,24 @@
                 </div>
             </div>
             <br>
+            <div class="card" id="rate">
+                <div class="card-body">
+                    <h4>Rate Here: </h4>
+                        <form  id="rating_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ rating_form.as_p }}
+                        <input type="submit" name="Rate" value="Rate" />
+                    </form>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+        <br>
+        <div class="col-md-12">
             <div class="card" id="comments">
                 <div class="card-body">
                     <div class="comment_div overflow-auto" >
@@ -76,11 +99,6 @@
                             <input type="submit" name="Comment" value="Comment" />
                         </form>
                         <br>
-                        <form  id="rating_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ rating_form.as_p }}
-                            <input type="submit" name="Rate" value="Rate" />
-                        </form>
                     </div>
 
                     {% else %}
@@ -88,6 +106,7 @@
                     {% endif %}
                 </div>
             </div>
+
         </div>
     </div>
 </div>

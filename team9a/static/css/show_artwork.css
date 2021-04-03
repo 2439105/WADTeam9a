@@ -27,6 +27,16 @@ div.posted{
 }
 
 div.comment_div{
-    height: 100%;
+    height: 300px;
+
+}
+
+div#comments{
+    margin-top:20px;
+
+}
+
+label{
+    display: none;
 
 }
