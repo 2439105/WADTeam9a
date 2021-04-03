@@ -8,6 +8,7 @@
 <!-- inspired from: https://www.bootdey.com/snippets/view/profile-with-data-and-skills#html -->
 {% block header_block %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/my_account.css' %}?{% now 'U' %}">
+    <script src = {% static "js/my_account.js" %}></script>
 {% endblock %}
 
 {% block content_block %}

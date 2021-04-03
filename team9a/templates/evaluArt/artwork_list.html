@@ -15,7 +15,7 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Filter</button>
+        <button id="filter" type="submit">Filter</button>
     </form>
    
     <div class="container">
@@ -27,16 +27,35 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <a href="{% url 'evaluArt:show_artwork' artwork.pk %}">
-                                    <img src="{{ artwork.picture.url }}" class="pics" > 
+                                    <img src="{{ artwork.picture.url }}" class="pics img-responsive" > 
                                 </a>
                             </div>
                             <div class="col-md-8">
 
                                 <h6>
                                     <p class="artwork-info">
-                                        <span>Submitted by: {{ artwork.user.user.username }} </span>  <br>
-                                        <span>Date: {{ artwork.date_posted }} </span> <br>
-                                        <span>Description: {{ artwork.content }} </span> <br>
+                                        <span>
+                                            <strong>
+                                            Submitted by:
+                                            </strong>
+                                             {{ artwork.user.user.username }} 
+                                        </span>  <br>
+                                        <span> 
+                                            <strong>
+                                            Date:
+                                            </strong>
+                                             {{ artwork.date_posted }} 
+                                        </span> <br>
+                                        <span>
+                                            <strong>
+                                            Description:
+                                            </strong>
+                                             {{ artwork.description }} 
+                                        </span> <br>
+                                        <strong>Category: </strong>
+                                        <span class="badge badge-primary">{{ artwork.category }}</span> 
+                    
+                                        <br>
                                         <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
                                     </p>
                                 </h6>
@@ -54,4 +73,7 @@
     </div>
 
 
+
+    
+    <script src = {% static "js/artwork_list.js" %}></script>
 {% endblock %}

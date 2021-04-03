@@ -5,10 +5,13 @@
 	Canvas
 {% endblock %}
 
-<head>
-    <link rel="stylesheet" href = {static 'css/canvas.css'}>
-    <script src = {% static "js/canvas.js" %}></script>
-</head>
+{% block header_block %}
+
+<link rel="stylesheet" href = {static 'css/canvas.css'}>
+<script src = {% static "js/canvas.js" %}></script>
+
+
+{% endblock %}
 
 {% block content_block %}
     <canvas id="canvas"></canvas>

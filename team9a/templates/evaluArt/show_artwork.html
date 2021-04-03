@@ -29,11 +29,12 @@
                     <br>
 
                     Posted - {{ artwork.date_posted }}<br>
+                    <strong>Category: </strong>
+                    <span class="badge badge-primary">{{ artwork.category }}</span> 
 
-                    Category: <span class="badge badge-primary">{{ artwork.category }}</span> <br>
-
-                    <strong>Description: </strong>
-                    {{ artwork.content }}
+                    <br>
+                    <strong>Description: </strong><br>
+                    {{ artwork.description }}
                 </div>
             </div>
             <br>

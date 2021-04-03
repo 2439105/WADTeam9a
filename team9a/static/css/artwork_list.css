@@ -14,7 +14,7 @@
     border-radius: .25rem;
 }
 
-form button{
+button#filter{
   position:relative;
   left:220px;
   top:-52px;
