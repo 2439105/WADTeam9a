@@ -155,6 +155,7 @@ def show_artwork(request, pk):
     context_dict['comment_form'] = CommentForm()
     context_dict['rating_form'] = RatingForm()
     context_dict['average_rating'] = average
+    context_dict['number_ratings'] = number
     if request.method == 'POST':
         if 'Comment' in request.POST:
             comment_form = CommentForm(request.POST)
