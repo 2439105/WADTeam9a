@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm, SelectCategoryForm
+from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm, SelectCategoryForm, RatingForm
 from evaluArt.models import ContactUs, Comments, Rating, Category, Artwork, UserProfile
 from django.contrib import messages
 
@@ -136,25 +136,46 @@ def show_artwork(request, pk):
     artwork = Artwork.objects.filter(pk = pk)[0]
     profile = artwork.user
     comments = Comments.objects.filter(artwork=artwork)
+    ratings = Rating.objects.filter(artwork=artwork)
+    total = 0
+    count = 0
+    average = 0
+    if ratings:
+        for item in ratings:
+            number = item.number
+            total += number
+            count += 1
+        average = round(total/count, 2)
 
     context_dict={}
     context_dict['artwork'] = artwork
     context_dict['profile'] = profile
     context_dict['comments'] = comments
-    
-    comment_form = CommentForm()
-
+    context_dict['ratings'] = ratings
+    context_dict['comment_form'] = CommentForm()
+    context_dict['rating_form'] = RatingForm()
+    context_dict['average_rating'] = average
     if request.method == 'POST':
-        f = CommentForm(request.POST)
-        if f.is_valid():
-            comment = f.save(commit=False)
-            comment.user = UserProfile.objects.filter(user = request.user)[0]
-            comment.artwork = context_dict['artwork']
-            comment.save()
+        if 'Comment' in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = UserProfile.objects.filter(user = request.user)[0]
+                comment.artwork = context_dict['artwork']
+                comment.save()
+            rating_form = RatingForm()
             return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
-    else:
-        context_dict['comment_form'] = comment_form
+        elif 'Rate' in request.POST:
+            rating_form = RatingForm(request.POST)
+            if rating_form.is_valid():
+                rating = rating_form.save(commit=False)
+                rating.user = UserProfile.objects.filter(user=request.user)[0]
+                rating.artwork = context_dict['artwork']
+                rating.save()
+            comment_form = CommentForm()
+            return redirect(reverse('evaluArt:show_artwork', kwargs={'pk':pk}))
     return render(request, 'evaluArt/show_artwork.html', context=context_dict)
+
 
 
 

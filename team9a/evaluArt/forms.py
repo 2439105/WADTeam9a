@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from evaluArt.models import UserProfile, ContactUs, Comments, Artwork, Category
+from evaluArt.models import UserProfile, ContactUs, Comments, Artwork, Category, Rating
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -41,3 +41,9 @@ class CommentForm(forms.ModelForm):
         
 class SelectCategoryForm(forms.Form):
     category = forms.ModelChoiceField(queryset=Category.objects.all())
+    
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ('number', )
+        

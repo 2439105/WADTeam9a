@@ -33,8 +33,12 @@
                     <span class="badge badge-primary">{{ artwork.category }}</span> 
 
                     <br>
-                    <strong>Description: </strong><br>
+                    <strong>Rating: </strong>
+                    {{ average_rating }}
+                    <br>
+                    <strong>Description: </strong>
                     {{ artwork.description }}
+
                 </div>
             </div>
             <br>
@@ -69,7 +73,13 @@
                         <form  id="comment_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ comment_form.as_p }}
-                            <input type="submit" name="submit" value="Comment" />
+                            <input type="submit" name="Comment" value="Comment" />
+                        </form>
+                        <br>
+                        <form  id="rating_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ rating_form.as_p }}
+                            <input type="submit" name="Rate" value="Rate" />
                         </form>
                     </div>
 
