@@ -10,7 +10,6 @@ from django.contrib import messages
 
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -39,6 +38,8 @@ def register(request):
                 
             profile.save()
             registered = True
+            
+            return redirect(reverse('evaluArt:artwork_list'))
         else:
             print(user_form.errors, profile_form.errors)
     else:
@@ -61,7 +62,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('evaluArt:login'))
+                return redirect(reverse('evaluArt:artwork_list'))
                 
             else:
                 return HttpResponse("Your EvaluArt account is disabled.")
@@ -112,7 +113,7 @@ def upload_artwork(request):
             selected_category = get_object_or_404(Category, pk=request.POST.get('category'))
             artwork.category = selected_category 
             artwork.save()
-            return redirect('/evaluArt')
+            return redirect(reverse('evaluArt:my_account'))
         else:
             print(artwork_form.errors)
     else:
@@ -179,7 +180,12 @@ def my_account(request):
     if request.method == 'POST':
         update_form = UserProfileForm(request.POST, instance=context_dict['profile'])
         if update_form.is_valid:
-            update_form.save()
+            profile = update_form.save()
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+        
             return redirect(reverse('evaluArt:my_account'))
 
 # request doesnt post a form
@@ -189,3 +195,11 @@ def my_account(request):
     return render(request, 'evaluArt/my_account.html', context=context_dict)
 
 
+def show_account(request, username):
+
+    context_dict = {}
+    context_dict['show_user'] = User.objects.get(username = username)
+    context_dict['profile'] = UserProfile.objects.filter(user = context_dict['show_user'])[0]
+    context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
+    context_dict['comments'] = Comments.objects.filter(artwork = context_dict['artwork'])
+    return render(request, 'evaluArt/show_account.html', context=context_dict)

@@ -12,6 +12,7 @@ urlpatterns = [
 
     # take in variable as pk for artwork
     path('artwork/<int:pk>/', views.show_artwork, name='show_artwork'),
+    path('user/<str:username>/', views.show_account, name='show_account'),
     
     path('register/', views.register, name='register'), # New mapping
     path('login/', views.user_login, name='login'),

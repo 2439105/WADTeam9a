@@ -20,11 +20,17 @@
         <div class="col-md-4">
             <div class="card" id="profile_description">
                 <div class="card-body">
-                    <img id="uploader_pp" src={{ profile.picture.url }}>
-                    <strong>
-                    {{ profile.user.username }}
-                    </strong><br>
-                    Posted - {{ artwork.date_posted }}<br><br>
+                    <a href="{% url 'evaluArt:show_account' profile.user.username %}">
+                        <img id="uploader_pp" src={{ profile.picture.url }}>
+                        <strong>
+                        {{ profile.user.username }}
+                        </strong>
+                    </a>
+                    <br>
+
+                    Posted - {{ artwork.date_posted }}<br>
+
+                    Category: <span class="badge badge-primary">{{ artwork.category }}</span> <br>
 
                     <strong>Description: </strong>
                     {{ artwork.content }}
@@ -39,8 +45,11 @@
                                 <h4>Comments: </h4>
                                 {% for c in comments %}
                                     <div class="comment_placeholder">
-                                        <img class="comment_pp" src={{ c.user.picture.url }}>
-                                        <strong>{{ c.user.user.username }}</strong>
+                                        <a href= "{% url 'evaluArt:show_account' c.user.user.username %}">
+                                            <img class="comment_pp" src={{ c.user.picture.url }}>
+                                            <strong>{{ c.user.user.username }}</strong>
+
+                                        </a>
                                         <div class="posted">Posted on: {{ c.date }} </div>
                                         <div class="comment_text">
                                             {{ c.text }}
@@ -53,6 +62,8 @@
                         </div>
                     </div>
                     <br><br>
+
+                    {% if user.is_authenticated %}
                     <div class="form-group">
                         <form  id="comment_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -60,6 +71,10 @@
                             <input type="submit" name="submit" value="Comment" />
                         </form>
                     </div>
+
+                    {% else %}
+                        <input class="form-control" type="text" placeholder="Log in to comment..." readonly>
+                    {% endif %}
                 </div>
             </div>
         </div>

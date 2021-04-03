@@ -55,26 +55,10 @@
               
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item active">
+                      <a class="nav-link" href={% url 'evaluArt:artwork_list' %}>
                         Artwork
                       </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item disabled" href="#">Categories</a>
-                        <a class="dropdown-item" href="#">Abstract</a>
-                        <a class="dropdown-item" href="#">Animals</a>
-                        <a class="dropdown-item" href="#">Anime/Cartoons</a>
-                        <a class="dropdown-item" href="#">Futuristic</a>
-                        <a class="dropdown-item" href="#">Surrealism</a>
-                        <a class="dropdown-item" href="#">Pixel Art</a>
-                        <a class="dropdown-item" href="#">Nature</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item disabled" href="#">Top Rated</a>
-                        <a class="dropdown-item" href="#">Today</a>
-                        <a class="dropdown-item" href="#">This Week</a>
-                        <a class="dropdown-item" href="#">This Month</a>
-                        <a class="dropdown-item" href="#">All Time</a>
-                      </div>
                     </li>
                     <li class="nav-item active">
                       <a class="nav-link" href={% url 'evaluArt:about' %}>About</a>
