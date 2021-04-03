@@ -38,8 +38,11 @@
                     <br>
                     
                     {% if user.is_authenticated %}
-                    <strong>Your rating: </strong> {{ previous_rating }}.0
+                    <strong>Your rating: </strong> {{ previous_rating }}
                     {% endif %}
+                    <br>
+                    <strong> Number of Ratings: </strong>
+                    {{ number_ratings }}
                     <br>
                     <strong>Description: </strong>
                     {{ artwork.description }}
