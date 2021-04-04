@@ -255,3 +255,29 @@ def show_account(request, username):
     context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
     context_dict['comments'] = Comments.objects.filter(artwork = context_dict['artwork'])
     return render(request, 'evaluArt/show_account.html', context=context_dict)
+
+def search(request):
+
+    context_dict = {}
+
+    if request.method == 'POST':
+        query = request.POST.get('query', None)
+        if query!="":
+            context_dict['query'] = query
+
+            try:
+                user_query = User.objects.filter(username__contains = query)[0]
+                profile_query = UserProfile.objects.filter(user=user_query)
+            except IndexError:
+                profile_query = None
+            finally:
+                artwork_query = Artwork.objects.filter(description__contains = query)
+                category_query = Category.objects.filter(name__contains = query)
+                comments_query = Comments.objects.filter(text__contains = query)
+            
+            context_dict['profile_query'] = profile_query
+            context_dict['artwork_query'] = artwork_query
+            context_dict['category_query'] = category_query
+            context_dict['comments_query'] = comments_query
+            
+    return render(request, 'evaluArt/search.html', context=context_dict)

@@ -1,0 +1,155 @@
+{% extends "evaluArt/base.html"  %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Search
+{% endblock %}
+
+
+{% block header_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}?{% now 'U' %}">
+{% endblock %}
+
+{% block content_block %}    
+    <h1>You searched for "{{ query }}"</h1>
+
+
+    <!-- context_dict['profile_query'] = profile_query
+    context_dict['artwork_query'] = artwork_query
+    context_dict['category_query'] = category_query
+    context_dict['comments_query'] = comments_query -->
+
+    <div class="col-md-12">
+        
+        <div class="card">
+            {% if profile_query %}
+                <div class="card-body">
+                    <h4>Profiles: </h4>
+                        {% for i in profile_query %}
+                        
+                            <a href= "{% url 'evaluArt:show_account' i.user.username %}">
+                                <img class="account_pp" src={{ i.picture.url }}>
+                                <strong>{{ i.user.username }}</strong>
+                            </a>
+
+                        {% endfor %}
+                </div>
+            {% else %}
+            <div class="card-body">
+                <h4>No Profiles with "{{ query }}" Found</h4>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            {% if artwork_query %}
+                <div class="card-body">    
+                    <h4>Artwork: </h4>
+                    {% for i in artwork_query %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="{% url 'evaluArt:show_artwork' i.pk %}">
+                                    <img src="{{ i.picture.url }}" class="pics img-responsive" > 
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+
+                                <h6>
+                                    <p class="artwork-info">
+                                        <span>
+                                            <strong>
+                                            Submitted by:
+                                            </strong>
+                                            {{ i.user.username }} 
+                                        </span>  <br>
+                                        <span> 
+                                            <strong>
+                                            Date:
+                                            </strong>
+                                            {{ i.date_posted }} 
+                                        </span> <br>
+                                        <span>
+                                            <strong>
+                                            Description:
+                                            </strong>
+                                            {{ i.description }} 
+                                        </span> <br>
+                                        <strong>Category: </strong>
+                                        <span class="badge badge-primary">{{ i.category }}</span> 
+                    
+                                        <br>
+                                        <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
+                                    </p>
+                                </h6>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+            <div class="card-body">
+                <h4>No Artwork with "{{ query }}" Found</h4>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            {% if category_query %}
+                <div class="card-body">
+                    <h4>Categories: </h4>
+                        {% for i in category_query %}
+                            <span class="badge badge-primary">{{ i.name }}</span> 
+                        {% endfor %}
+                </div>
+            {% else %}
+            <div class="card-body">
+                <h4>No Categories with "{{ query }}" Found</h4>
+            </div>
+                
+            {% endif %}
+        </div>
+
+        <div class="card">
+            {% if comments_query %}
+                <div class="card-body">
+                    <h4>Comments: </h4>
+                        {% for i in comments_query %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="{% url 'evaluArt:show_artwork' i.artwork.pk %}">
+                                        <img src="{{ i.artwork.picture.url }}" class="pics img-responsive" > 
+                                    </a>
+                                
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="comment_placeholder">
+                                        <a href= "{% url 'evaluArt:show_account' i.user.user.username %}">
+                                            <img class="comment_pp" src={{ i.user.picture.url }}>
+                                            <strong>{{ i.user.user.username }}</strong>
+
+                                        </a>
+                                        <div class="posted">Posted on: {{ c.date }} </div>
+                                        <div class="comment_text">
+                                            {{ i.text }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            <br>
+
+                        {% endfor %}
+                </div>
+            {% else %}            
+            <div class="card-body">
+                <h4>No Comments with "{{ query }}" Found</h4>
+            </div>
+                
+            {% endif %}
+        </div>
+    </div>
+
+
+
+{% endblock %}
