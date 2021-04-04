@@ -171,7 +171,7 @@ class RegistrationTests(TestCase):
         self.assertTrue('action="/evaluArt/register/"' in content, f"{FAILURE_HEADER}Is <form> in register.html pointing to the correct URL for registering a user?{FAILURE_FOOTER}")
         self.assertTrue('<input type="submit" name="submit" value="Register" />' in content, f"{FAILURE_HEADER}ouldn't find the markup for the form submission button in register.html.{FAILURE_FOOTER}")
         self.assertTrue('<p><label for="id_password">Password:</label> <input type="password" name="password" required id="id_password"></p>' in content, f"{FAILURE_HEADER}Checking a random form field in register.html (password), the markup didn't match what was expected.{FAILURE_FOOTER}")
-    C
+        
     def test_bad_registration_post_response(self):
 
         request = self.client.post(reverse('evaluArt:register'))
@@ -272,3 +272,30 @@ class LogoutTests(TestCase):
         self.assertEqual(response.status_code, 302, f"{FAILURE_HEADER}Logging out a user didnt cause a redirect{FAILURE_FOOTER}")
         self.assertEqual(response.url, reverse('evaluArt:login'), f"{FAILURE_HEADER}Did not redirect to login.{FAILURE_FOOTER}")
         self.assertTrue('_auth_user_id' not in self.client.session, f"{FAILURE_HEADER}User wasnt logged out.{FAILURE_FOOTER}")
+
+class templateTests(TestCase):
+    
+    def test_template_directory(self):
+        
+        template_base_path = os.path.join(settings.TEMPLATE_DIR, 'evaluArt')
+        
+        about_path = os.path.join(template_base_path, 'about.html')
+        artwork_list_path = os.path.join(template_base_path, 'artwork_list.html')
+        base_path = os.path.join(template_base_path, 'base.html')
+        contact_us_path = os.path.join(template_base_path, 'contact_us.html')
+        my_account_path = os.path.join(template_base_path, 'my_account.html')
+        search_path = os.path.join(template_base_path, 'search.html')
+        show_account_path = os.path.join(template_base_path, 'show_account.html')
+        show_artwork_path = os.path.join(template_base_path, 'show_artwork.html')
+        upload_artwork_path = os.path.join(template_base_path, 'upload_artwork.html')
+        
+        self.assertTrue(os.path.exists(about_path), f"{FAILURE_HEADER}Couldn't find the 'about.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(artwork_list_path), f"{FAILURE_HEADER}Couldn't find the 'artwork_list.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(base_path), f"{FAILURE_HEADER}Couldn't find the 'base.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(contact_us_path), f"{FAILURE_HEADER}Couldn't find the 'contact_us.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(my_account_path), f"{FAILURE_HEADER}Couldn't find the 'my_account.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(search_path), f"{FAILURE_HEADER}Couldn't find the 'search.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(show_account_path), f"{FAILURE_HEADER}Couldn't find the 'show_account.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(show_artwork_path), f"{FAILURE_HEADER}Couldn't find the 'show_artwork.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.exists(upload_artwork_path), f"{FAILURE_HEADER}Couldn't find the 'upload_artwork.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
+        
