@@ -3,15 +3,12 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
 from evaluArt.forms import UserForm, UserProfileForm, ContactUsForm, ArtworkForm, CommentForm, SelectCategoryForm, RatingForm
-from evaluArt.models import ContactUs, Comments, Rating, Category, Artwork, UserProfile
+from evaluArt.models import Comments, Rating, Category, Artwork, UserProfile
 from django.contrib import messages
 
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
