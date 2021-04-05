@@ -12,13 +12,11 @@
 {% endblock %}
 
 {% block content_block %}
-    <!-- copy pasted -->
+
     <div class="container">
         <div class="main-body">
-        
               <div class="row gutters-sm">
-
-                <!-- picture section -->
+                <!-- profile picture section -->
                 <div class="col-md-3 mb-3">
                   <div class="card">
                     <div class="card-body">
@@ -26,6 +24,7 @@
                         <img id="profile_picture" src={{ profile.picture.url }} alt="profile picture">
                       </div>
                     </div>
+                    <!-- button to edit account details -->
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                         Edit Profile
                     </button>
@@ -33,7 +32,7 @@
                   </div>
                 </div>
 
-
+                <!-- pop up modal after clicking the edot profile button -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -65,6 +64,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
 
+                            <!-- display username -->
                             <div class="row">
                                 <div class="col-sm-3">
                                 <h6 class="mb-0">Username</h6>
@@ -75,6 +75,7 @@
                             </div>
                             <hr>
 
+                            <!-- display email -->
                             <div class="row">
                                 <div class="col-sm-3">
                                 <h6 class="mb-0">Email</h6>
@@ -85,6 +86,7 @@
                             </div>
                             <hr>
 
+                            <!-- display experience -->
                             <div class="row">
                                 <div class="col-sm-3">
                                 <h6 class="mb-0">Experience</h6>
@@ -103,6 +105,7 @@
                             </div>
                             <hr>
 
+                            <!-- display description -->
                             <div class="row">
                                 <div class="col-sm-3">
                                 <h6 class="mb-0">Description</h6>
@@ -120,12 +123,14 @@
         </div>
     </div>        
 
+    <!-- "Gallery", show user's artwork -->
     <div class="container">
         <h2><strong>My Artwork </strong></h2>
         <span><a href={% url 'evaluArt:upload_artwork' %}>Add new Artwork +</a></span>
         <br/>
         <br/>
 
+        <!-- gootstrap grid system, all pictures has the same size to make it neat -->
         <div class="container">
             <div class="row">
                 {% if not artwork.all %}

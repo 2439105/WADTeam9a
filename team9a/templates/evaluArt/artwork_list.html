@@ -12,6 +12,7 @@
 
 {% block content_block %} 
     <br>
+    <!-- takes in form to filter by categories -->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
@@ -20,12 +21,14 @@
    
     <div class="container">
         <div class="content">
-            <div class="section-inner clearfix">        
+            <div class="section-inner clearfix">     
+                   <!-- iterates through list of artworks provided -->
             {% for artwork in artwork %}
                 <div class="card">
                     <div class="card-body">                   
                         <div class="row">
                             <div class="col-md-4">
+                                <!-- shows the artwork -->
                                 <a href="{% url 'evaluArt:show_artwork' artwork.pk %}">
                                     <img src="{{ artwork.picture.url }}" class="pics img-responsive" > 
                                 </a>
@@ -34,6 +37,7 @@
 
                                 <h6>
                                     <p class="artwork-info">
+                                        <!-- details about the artwork -->
                                         <span>
                                             <strong>
                                             Submitted by:
@@ -56,8 +60,7 @@
                                         <span class="badge badge-primary">{{ artwork.category }}</span> 
                     
                                         <br>
-                                        <!---<span>Category: <a href="http://127.0.0.1:8000/category/{{ artwork.category.slug }}">{{ artwork.category.name }}</a></span> |--->
-                                    </p>
+                                      </p>
                                 </h6>
                             </div>
                         </div>
@@ -74,6 +77,6 @@
 
 
 
-    
+    <!-- script written to keep the aspect ratio but also fit the bootstrap grid system -->
     <script src = {% static "js/artwork_list.js" %}></script>
 {% endblock %}

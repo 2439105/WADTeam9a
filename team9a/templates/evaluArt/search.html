@@ -1,3 +1,5 @@
+<!-- page shown when u click on search -->
+
 {% extends "evaluArt/base.html"  %}
 {% load staticfiles %}
 
@@ -11,16 +13,12 @@
 {% endblock %}
 
 {% block content_block %}    
+<!-- Show what you searched for -->
     <h1>You searched for "{{ query }}"</h1>
-
-
-    <!-- context_dict['profile_query'] = profile_query
-    context_dict['artwork_query'] = artwork_query
-    context_dict['category_query'] = category_query
-    context_dict['comments_query'] = comments_query -->
 
     <div class="col-md-12">
         
+        <!-- Section for user profiles with usernames containing the query -->
         <div class="card">
             {% if profile_query %}
                 <div class="card-body">
@@ -41,6 +39,7 @@
             {% endif %}
         </div>
 
+        <!-- Section for artwork with description containing the query  -->
         <div class="card">
             {% if artwork_query %}
                 <div class="card-body">    
@@ -93,6 +92,7 @@
             {% endif %}
         </div>
 
+        <!-- Section for category with names containing query -->
         <div class="card">
             {% if category_query %}
                 <div class="card-body">
@@ -109,6 +109,7 @@
             {% endif %}
         </div>
 
+        <!-- Section for comments with text containing the query -->
         <div class="card">
             {% if comments_query %}
                 <div class="card-body">

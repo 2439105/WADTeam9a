@@ -130,13 +130,18 @@ def artwork_list(request):
     return render(request, 'evaluArt/artwork_list.html', {'form' : category_form, 'artwork': artwork})
 
 def show_artwork(request, pk):
+
+    # instances to pass into the html file
     artwork = Artwork.objects.filter(pk = pk)[0]
     profile = artwork.user
     comments = Comments.objects.filter(artwork=artwork)
     ratings = Rating.objects.filter(artwork=artwork)
+
+    # find the average rating for a specific artwork
     total = 0
     count = 0
     average = 0
+    # iterate through all ratings and sum them togeher then divide it by the number of ratings
     if ratings:
         for item in ratings:
             number = item.number
@@ -151,6 +156,7 @@ def show_artwork(request, pk):
     context_dict['ratings'] = ratings
     context_dict['rating_num'] = count
 
+    # if user is logged in, pass in the rating that the user previously voted
     if request.user.is_authenticated:
         try:
             loggedin = UserProfile.objects.filter(user=request.user)[0]
@@ -158,6 +164,7 @@ def show_artwork(request, pk):
                 user=loggedin, 
                 artwork = artwork)[0]
             context_dict['previous_rating'] = prev.number
+        # catch index error as it means that the logged in user didnt rate the artwork before
         except IndexError:
             context_dict['previous_rating'] = "You haven't rate this artwork yet"
 
@@ -167,6 +174,8 @@ def show_artwork(request, pk):
     context_dict['rating_form'] = RatingForm()
     context_dict['average_rating'] = average
 
+
+    # check if post if from a comment form 
     if request.user.is_authenticated:
         if request.method == 'POST':
             if 'Comment' in request.POST:
@@ -209,19 +218,22 @@ def show_artwork(request, pk):
 
 @login_required
 def my_account(request):
-
+    # get all the fields for a profile, and all the artwork
     context_dict = {}
     context_dict['user'] = request.user
     context_dict['profile'] = UserProfile.objects.filter(user = context_dict['user'])[0]
     context_dict['artwork'] = Artwork.objects.filter(user = context_dict['profile'])
     context_dict['comments'] = Comments.objects.filter(artwork = context_dict['artwork'])
 
+# initital data for the forms to change the user's profile details
     initial_data = {
         'picture': context_dict['profile'].picture,
         'experience': context_dict['profile'].experience,
         'description': context_dict['profile'].description
     }
 
+# form to change profile details
+# only to change profile picture, experience and description
     form = UserProfileForm(instance=context_dict['profile'])
 
 
@@ -244,6 +256,7 @@ def my_account(request):
     return render(request, 'evaluArt/my_account.html', context=context_dict)
 
 
+# view to show another user's account
 def show_account(request, username):
 
     context_dict = {}
@@ -253,21 +266,27 @@ def show_account(request, username):
     context_dict['comments'] = Comments.objects.filter(artwork = context_dict['artwork'])
     return render(request, 'evaluArt/show_account.html', context=context_dict)
 
+
+# view to query the database
 def search(request):
 
     context_dict = {}
 
+# get the word from the search form
     if request.method == 'POST':
         query = request.POST.get('query', None)
         if query!="":
             context_dict['query'] = query
 
+# uses try-catch because there might not be a user whos username contains the query
             try:
                 user_query = User.objects.filter(username__contains = query)[0]
                 profile_query = UserProfile.objects.filter(user=user_query)
             except IndexError:
                 profile_query = None
             finally:
+                # this portion will always run
+                # checks description of artwork, name of category, text of comments if it contains the query
                 artwork_query = Artwork.objects.filter(description__contains = query)
                 category_query = Category.objects.filter(name__contains = query)
                 comments_query = Comments.objects.filter(text__contains = query)

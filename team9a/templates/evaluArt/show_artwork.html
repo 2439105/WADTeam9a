@@ -1,3 +1,4 @@
+<!-- page showing a single piece of artwork -->
 {% extends "evaluArt/base.html"  %}
 {% load staticfiles %}
 
@@ -15,11 +16,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
+            <!-- shows the artwork -->
             <img class="artwork" src={{ artwork.picture.url }}><br>
         </div>
         <div class="col-md-4">
             <div class="card" id="profile_description">
                 <div class="card-body">
+                    <!-- shows the uplaoder, date posted, rating and description -->
                     <a href="{% url 'evaluArt:show_account' profile.user.username %}">
                         <img id="uploader_pp" src={{ profile.picture.url }}>
                         <strong>
@@ -50,6 +53,7 @@
                 </div>
             </div>
             <br>
+            <!-- rating form -->
             <div class="card" id="rate">
                 <div class="card-body">
                     <h4>Rate Here: </h4>
@@ -67,6 +71,7 @@
 
         </div>
         <br>
+        <!-- Comments section -->
         <div class="col-md-12">
             <div class="card" id="comments">
                 <div class="card-body">
@@ -93,7 +98,7 @@
                         </div>
                     </div>
                     <br><br>
-
+                    <!-- if the user is logged in, the user can comment -->
                     {% if user.is_authenticated %}
                     <div class="form-group">
                         <form  id="comment_form" method="post" action="{% url 'evaluArt:show_artwork' artwork.pk %}" enctype="multipart/form-data">
