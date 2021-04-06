@@ -15,6 +15,7 @@ FAILURE_FOOTER = f"{os.linesep}"
 
 f"{FAILURE_HEADER} {FAILURE_FOOTER}"
 
+#used to create a user
 def create_user_object():
     user = User.objects.get_or_create(username='testuser',
                                       email='test@test.com')[0]
@@ -23,9 +24,11 @@ def create_user_object():
 
     return user
 
+#make an admin
 def create_super_user_object():
     return User.objects.create_superuser('admin', 'admin@test.com', 'testpassword')
 
+#returns template as string
 def get_template(path_to_template):
     f = open(path_to_template, 'r')
     template_str = ""
@@ -36,6 +39,7 @@ def get_template(path_to_template):
     f.close()
     return template_str
 
+#checks if all required apps are installed
 class installedAppsTests(TestCase):
     def test_installed_apps(self):
         self.assertTrue('django.contrib.admin' in settings.INSTALLED_APPS)
@@ -46,17 +50,22 @@ class installedAppsTests(TestCase):
         self.assertTrue('django.contrib.staticfiles' in settings.INSTALLED_APPS)
         self.assertTrue('evaluArt' in settings.INSTALLED_APPS)
 
+ #check if category correctly made into slu       
 class CategoryMethodTests(TestCase):
     def test_slug_line_creation(self):
         category = Category(name='Random Category String')
         category.save()
         self.assertEqual(category.slug, 'random-category-string')
 
+#Check profile made correctly
 class profileModelTests(TestCase):
+    #is class in models and are all attributes present
     def test_userprofile_class(self):
         self.assertTrue('UserProfile' in dir(evaluArt.models))
 
         user_profile = evaluArt.models.UserProfile()
+        
+        #create user profile
         expected_attributes = {
             'description': 'just some words',
             'picture': 'default/default.jpg',
@@ -71,21 +80,25 @@ class profileModelTests(TestCase):
         }
 
         found_count = 0
-
+        
+        #iterates through profile meta fields
         for attr in user_profile._meta.fields:
             attr_name = attr.name
 
+            #iterates through expected attributes counting when they are found
             for expected_attr_name in expected_attributes.keys():
                 if expected_attr_name == attr_name:
                     found_count += 1
-
+                    #check if attribute is the correct type
                     self.assertEqual(type(attr), expected_types[attr_name], 
                     f"{FAILURE_HEADER}The type of attribute for '{attr_name}' was '{type(attr)}'; it should be '{expected_types[attr_name]}'. Check UserProfile model.{FAILURE_FOOTER}")
                     setattr(user_profile, attr_name, expected_attributes[attr_name])
         
+        #check there are the correct number of attributes
         self.assertEqual(found_count, len(expected_attributes.keys()), f"{FAILURE_HEADER}there was {found_count} attributes found but there should be {len(expected_attributes.keys())}.{FAILURE_FOOTER}")
         user_profile.save()
     
+    #checks if userprofile is accesible
     def test_model_admin_interface_inclusion(self):
         super_user = create_super_user_object()
         self.client.login(username='admin', password='testpassword')
@@ -94,6 +107,7 @@ class profileModelTests(TestCase):
         self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}wrong status code{FAILURE_FOOTER}")
 
 class RegisterFormClassTests(TestCase):
+    #check userform done correctly
     def test_user_form(self):
         self.assertTrue('UserForm' in dir(forms), f"{FAILURE_HEADER}UserForm isnt in forms.py{FAILURE_FOOTER}")
         
@@ -114,6 +128,7 @@ class RegisterFormClassTests(TestCase):
             self.assertTrue(expected_field_name in fields.keys(), f"{FAILURE_HEADER}The field {expected_field_name} was not in the UserForm form.{FAILURE_FOOTER}")
             self.assertEqual(expected_field, type(fields[expected_field_name]), f"{FAILURE_HEADER}The field {expected_field_name} in UserForm was not of the correct type. Expected {expected_field}; got {type(fields[expected_field_name])}.{FAILURE_FOOTER}")
     
+    #check userprofile form done correctly
     def test_user_profile_form(self):
         self.assertTrue('UserProfileForm' in dir(forms), f"{FAILURE_HEADER}Couldn't find the UserProfileForm class in forms.py module.{FAILURE_FOOTER}")
         
@@ -135,6 +150,7 @@ class RegisterFormClassTests(TestCase):
             self.assertEqual(expected_field, type(fields[expected_field_name]), f"{FAILURE_HEADER}The field {expected_field_name} in UserProfileForm was not of the correct type. Expected {expected_field}; got {type(fields[expected_field_name])}.{FAILURE_FOOTER}")
 
 class RegistrationTests(TestCase):
+    #check register view is in the correct location
     def test_new_registration_view_exists(self):
         url = ''
 
@@ -145,6 +161,7 @@ class RegistrationTests(TestCase):
         
         self.assertEqual(url, '/evaluArt/register/', f"{FAILURE_HEADER}evaluArt:register isn't mapped correctly to url.{FAILURE_FOOTER}")
     
+    #is register template in the correct place and inherit from the base template
     def test_registration_template(self):
 
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'evaluArt')
@@ -161,6 +178,7 @@ class RegistrationTests(TestCase):
         self.assertTrue(re.search(full_title_pattern, content), f"{FAILURE_HEADER}The <title> of the response for 'evaluArt:register' is not correct.{FAILURE_FOOTER}")
         self.assertTrue(re.search(block_title_pattern, template_str), f"{FAILURE_HEADER}Is register.html using template inheritance? Is your <title> block correct?{FAILURE_FOOTER}")
 
+    #check the register form is correct
     def test_registration_get_response(self):
 
         request = self.client.get(reverse('evaluArt:register'))
@@ -172,6 +190,7 @@ class RegistrationTests(TestCase):
         self.assertTrue('<input type="submit" name="submit" value="Register" />' in content, f"{FAILURE_HEADER}ouldn't find the markup for the form submission button in register.html.{FAILURE_FOOTER}")
         self.assertTrue('<p><label for="id_password">Password:</label> <input type="password" name="password" required id="id_password"></p>' in content, f"{FAILURE_HEADER}Checking a random form field in register.html (password), the markup didn't match what was expected.{FAILURE_FOOTER}")
         
+    #check response to a blank form
     def test_bad_registration_post_response(self):
 
         request = self.client.post(reverse('evaluArt:register'))
@@ -179,6 +198,7 @@ class RegistrationTests(TestCase):
 
         self.assertTrue('<ul class="errorlist">' in content)
     
+    #check for register successfully
     def test_good_form_creation(self):
 
         user_data = {'username': 'testuser', 'password': 'test123', 'email': 'test@test.com'}
@@ -201,7 +221,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(len(User.objects.all()), 1, f"{FAILURE_HEADER}Was expecting User object to be created, but it didn't appear. Check your UserForm implementation, and try again.{FAILURE_FOOTER}")
         self.assertEqual(len(evaluArt.models.UserProfile.objects.all()), 1, f"{FAILURE_HEADER}Was a UserProfile object created, but it didn't appear. Check UserProfileForm implementation.{FAILURE_FOOTER}")
         self.assertTrue(self.client.login(username='testuser', password='test123'), f"{FAILURE_HEADER}Couldn't log sample user in during the tests. Check implementation of UserForm and UserProfileForm.{FAILURE_FOOTER}")
-
+   
+    #check link added to base template
     def test_base_for_register_link(self):
 
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'evaluArt')
@@ -209,8 +230,9 @@ class RegistrationTests(TestCase):
         template_str = get_template(base_path)
         self.assertTrue('<a href={% url \'evaluArt:register\' %}>Register</a>' in template_str)
 
+#test login functionality
 class LoginTests(TestCase):
-
+    #test view is in correct place
     def test_login_url_exists(self):
 
         url = ''
@@ -221,7 +243,8 @@ class LoginTests(TestCase):
             pass
         
         self.assertEqual(url, '/evaluArt/login/', f"{FAILURE_HEADER}login not mapped correctly.{FAILURE_FOOTER}")
-
+    
+    #test template exists and that it inherits from the base template
     def test_login_template(self):
 
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'evaluArt')
@@ -238,6 +261,7 @@ class LoginTests(TestCase):
         self.assertTrue(re.search(full_title_pattern, content), f"{FAILURE_HEADER}The <title> of the response for 'evaluArt:login' is not correct.{FAILURE_FOOTER}")
         self.assertTrue(re.search(block_title_pattern, template_str), f"{FAILURE_HEADER}Is login.html using template inheritance?{FAILURE_FOOTER}")
     
+    #test for the content of login template
     def test_login_template_content(self):
 
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'evaluArt')
@@ -248,15 +272,18 @@ class LoginTests(TestCase):
         self.assertTrue('<h1>Login to EvaluArt</h1>' in template_str, f"{FAILURE_HEADER}Couldn't find the '<h1>Login to EvaluArt</h1>' in the login.html template.{FAILURE_FOOTER}")
         self.assertTrue('action="{% url \'evaluArt:login\' %}"' in template_str, f"{FAILURE_HEADER}Couldn't find the url lookup for 'evaluArt:login' in your login.html <form>.{FAILURE_FOOTER}")
         self.assertTrue('<input type="submit" value="submit" />' in template_str, f"{FAILURE_HEADER}Couldn't find the submit button in your login.html template.{FAILURE_FOOTER}")
-    
+
+#test logout functionality  
 class LogoutTests(TestCase):
 
+    #tests that logout redirects to the login page
     def test_bad_request(self):
 
         response = self.client.get(reverse('evaluArt:logout'))
         self.assertTrue(response.status_code, 302)
         self.assertTrue(response.url, reverse('evaluArt:login'))
     
+    #tests that logout successfully logs out the user from the profile
     def test_good_request(self):
 
         user_object = create_user_object()
@@ -273,6 +300,7 @@ class LogoutTests(TestCase):
         self.assertEqual(response.url, reverse('evaluArt:login'), f"{FAILURE_HEADER}Did not redirect to login.{FAILURE_FOOTER}")
         self.assertTrue('_auth_user_id' not in self.client.session, f"{FAILURE_HEADER}User wasnt logged out.{FAILURE_FOOTER}")
 
+ #tests that all templates are in the correct location
 class templateTests(TestCase):
     
     def test_template_directory(self):
@@ -299,7 +327,7 @@ class templateTests(TestCase):
         self.assertTrue(os.path.exists(show_artwork_path), f"{FAILURE_HEADER}Couldn't find the 'show_artwork.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
         self.assertTrue(os.path.exists(upload_artwork_path), f"{FAILURE_HEADER}Couldn't find the 'upload_artwork.html' template in the 'templates/evaluArt/' directory.{FAILURE_FOOTER}")
         
-        
+#tests that base template contains the required links
 class baseTests(TestCase):
     
     def test_links(self):
